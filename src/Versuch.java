@@ -21,6 +21,8 @@ public class Versuch
                 if (letzterVersuch == null || (letzterVersuch.getVersuch() < versuch.getVersuch()))
                 {
                     letzterVersuch = versuch;
+                }else if (letzterVersuch.getVersuch() == versuch.getVersuch() && letzterVersuch.getNote() > versuch.getNote()){
+                    letzterVersuch = versuch;
                 }
             }
         }

@@ -33,7 +33,13 @@ public class Student
     public boolean fuerPruefungZugelassen(Pruefung pruefung)
     {
         if (exmatrikuliert) return false;
-        if (BestandenePruefungen.contains(pruefung)) return false;
+        if (BestandenePruefungen.contains(pruefung))
+        {
+            for (Versuch versuch:Versuche)
+            {
+                if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch()>0) return false;
+            }
+        }
         Set<Pruefung> voraussetzungen = new HashSet<Pruefung>();
         pruefung.getModul().getVoraussetzungen().forEach(p -> voraussetzungen.addAll(p.getPruefungen()));
         if (!BestandenePruefungen.containsAll(voraussetzungen)) return false;
@@ -84,6 +90,27 @@ public class Student
         {
             addVersuch(new Versuch(naechstePruefung, 1, note));
         }
+    }
+
+    public void freiVersuch(String modulId, int pruefungsNr, float note)
+    {
+        freiVersuch(Studiengang.getModul(modulId), pruefungsNr, note);
+    }
+
+    public void freiVersuch(Modul modul, int pruefungsNr, float note)
+    {
+        if (modul.getPruefungMitNr(pruefungsNr) != null)
+        {
+            freiVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+        }
+    }
+
+    public void freiVersuch(Pruefung pruefung, float note) {
+        for (Versuch versuch:Versuche)
+        {
+            if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch() > 0) return;
+        }
+        addVersuch(new Versuch(pruefung,0,note));
     }
 
     public void addVersuch(Versuch versuch)
