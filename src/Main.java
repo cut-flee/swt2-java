@@ -77,6 +77,7 @@ public class Main
                 {
                     int matrkl = Integer.valueOf(in.next());
                     String id = in.next();
+                    int pruefungsNr = Integer.valueOf(in.next());
                     float note = Float.valueOf(in.next());
                     if (id.length() == 3)
                     {
@@ -86,15 +87,36 @@ public class Main
                     {
                         if (student.getMatrikelNr() == matrkl)
                         {
-                            for (Pruefung pruefung : student.getMoeglichePruefungen())
+                            if (student.setNaechsterVersuch(id, pruefungsNr, note))
                             {
-                                if (pruefung.getModul().getId().equals(id))
-                                {
-                                    student.setNaechsterVersuch(id, note);
-                                    System.out.print(id);
-                                    System.out.print(" Modulnote: ");
-                                    System.out.println(student.getNote(id));
-                                }
+                                System.out.print(id);
+                                System.out.print(" Modulnote: ");
+                                System.out.println(student.getNote(id));
+                            }
+                        }
+                    }
+                }
+                break;
+                case ("f"):
+                case ("Freiversuch"):
+                {
+                    int matrkl = Integer.valueOf(in.next());
+                    String id = in.next();
+                    int pruefungsNr = Integer.valueOf(in.next());
+                    float note = Float.valueOf(in.next());
+                    if (id.length() == 3)
+                    {
+                        id = "INF-B-" + id;
+                    }
+                    for (Student student : studenten)
+                    {
+                        if (student.getMatrikelNr() == matrkl)
+                        {
+                            if (student.freiVersuch(id, pruefungsNr, note))
+                            {
+                                System.out.print(id);
+                                System.out.print(" Modulnote: ");
+                                System.out.println(student.getNote(id));
                             }
                         }
                     }
@@ -108,14 +130,14 @@ public class Main
                     {
                         if (student.getMatrikelNr() == matrkl)
                         {
-                            for (Modul modul:student.angefangeneModule())
+                            for (Modul modul : student.angefangeneModule())
                             {
                                 System.out.print(modul.getId());
                                 System.out.print(" ");
                                 System.out.print(student.getNote(modul));
                                 System.out.print(" ");
                                 System.out.println(modul.getName());
-                                for (Versuch versuch:student.getVersuche())
+                                for (Versuch versuch : student.getVersuche())
                                 {
                                     if (versuch.getModul().equals(modul))
                                     {
@@ -150,12 +172,10 @@ public class Main
                             if (student.isExmatrikuliert())
                             {
                                 System.out.println(" ist exmatrikuliert.");
-                            }
-                            else if (student.abschluss())
+                            } else if (student.abschluss())
                             {
                                 System.out.print(" hat das Studium abgeschlossen.");
-                            }
-                            else
+                            } else
                             {
                                 System.out.print(" hat ");
                                 System.out.print(student.getBestandeneModule().size());
@@ -170,7 +190,7 @@ public class Main
                 default:
                 {
                     System.out.println("Komandos: ");
-                    System.out.println("------------------------------------------------------------");
+                    System.out.println("------------------------------------------------------------------------------------------------");
                     System.out.println("help: zeigt diese Hilfe an");
                     System.out.println();
                     System.out.println("q, exit, quit: Programm verlassen");
@@ -186,13 +206,17 @@ public class Main
                     System.out.println("    listet alle möglichen Prüfungen für den Studenten mit der");
                     System.out.println("    MatrikelNr. [mtrkl] auf");
                     System.out.println();
-                    System.out.println("v [mtrkl] [modul] [note], Versuch [mtrkl] [modul] [note]:");
+                    System.out.println("v [mtrkl] [modul] [pruefungsNr] [note], Versuch [mtrkl] [modul] [pruefungsNr] [note]:");
                     System.out.println();
                     System.out.println("    fügt einen neuen Versuch für den Studenten mit der");
                     System.out.println("    MatrikelNr. [mtrkl] im Modul mit der Bezeichnung [modul]");
-                    System.out.println("    ein");
+                    System.out.println("    für die Prüfung mit der Nummer [pruefungsNr] ein");
                     System.out.println("    [modul] kann auch nur die letzten drei Ziffern der");
                     System.out.println("    Modulbezeichnung  sein");
+                    System.out.println();
+                    System.out.println("f [mtrkl] [modul] [pruefungsNr] [note], Freiversuch [mtrkl] [modul] [pruefungsNr] [note]:");
+                    System.out.println();
+                    System.out.println("    funktioniert wie v/Versuch nur für Freiversuche");
                     System.out.println();
                     System.out.println("m [mtrkl], Modulnoten [mtrkl]:");
                     System.out.println();
@@ -203,7 +227,7 @@ public class Main
                     System.out.println();
                     System.out.println("    gibt den Studienfortschritt des Studenten mit der");
                     System.out.println("    MatrikelNr. [mtrkl] aus");
-                    System.out.println("------------------------------------------------------------");
+                    System.out.println("------------------------------------------------------------------------------------------------");
                 }
                 break;
             }

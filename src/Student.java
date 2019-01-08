@@ -47,75 +47,59 @@ public class Student
         return BestandenePruefungen.contains(pruefung.getModul().getPruefungMitNr(pruefung.getPruefungNr() - 1));
     }
 
-    public void setNaechsterVersuch(String modulId, float note)
+    public boolean setNaechsterVersuch(String modulId, int pruefungsNr, float note)
     {
-        setNaechsterVersuch(Studiengang.getModul(modulId), note);
+        return setNaechsterVersuch(Studiengang.getModul(modulId), pruefungsNr, note);
     }
 
-    public void setNaechsterVersuch(Modul modul, float note)
-    {
-        Versuch letzterVersuch = null;
-        for (Pruefung pruefung : modul.getPruefungen())
-        {
-            Versuch letzterPruefungsVersuch = Versuch.letzterVersuch(Versuche,pruefung);
-
-            if (letzterVersuch == null || (letzterPruefungsVersuch != null && letzterPruefungsVersuch.getPruefung().getPruefungNr() > letzterVersuch.getPruefung().getPruefungNr()))
-            {
-                letzterVersuch = letzterPruefungsVersuch;
-            }
-
-        }
-        int naechstePruefungsNr = 1;
-        if (letzterVersuch != null)
-        {
-            if (letzterVersuch.bestanden())
-            {
-                naechstePruefungsNr = letzterVersuch.getPruefung().getPruefungNr() + 1;
-            } else
-            {
-                addVersuch(Versuch.naechsterVersuch(letzterVersuch, note));
-                return;
-            }
-        }
-        Pruefung naechstePruefung = null;
-        for (Pruefung pruefung : modul.getPruefungen())
-        {
-            if (pruefung.getPruefungNr() == naechstePruefungsNr)
-            {
-                naechstePruefung = pruefung;
-            }
-        }
-
-        if (naechstePruefung != null)
-        {
-            addVersuch(new Versuch(naechstePruefung, 1, note));
-        }
-    }
-
-    public void freiVersuch(String modulId, int pruefungsNr, float note)
-    {
-        freiVersuch(Studiengang.getModul(modulId), pruefungsNr, note);
-    }
-
-    public void freiVersuch(Modul modul, int pruefungsNr, float note)
+    public boolean setNaechsterVersuch(Modul modul, int pruefungsNr, float note)
     {
         if (modul.getPruefungMitNr(pruefungsNr) != null)
         {
-            freiVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+            return setNaechsterVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+        }
+        return false;
+    }
+
+    public boolean setNaechsterVersuch(Pruefung pruefung, float note)
+    {
+        Versuch letzterVersuch = Versuch.letzterVersuch(Versuche, pruefung);
+        if (letzterVersuch == null || letzterVersuch.getVersuch() == 0)
+        {
+            return addVersuch(new Versuch(pruefung,1,note));
+        }else
+        {
+            Versuch naechsterVersuch = Versuch.naechsterVersuch(letzterVersuch,note);
+            if (naechsterVersuch == null) return false;
+            return addVersuch(naechsterVersuch);
         }
     }
 
-    public void freiVersuch(Pruefung pruefung, float note) {
+    public boolean freiVersuch(String modulId, int pruefungsNr, float note)
+    {
+        return freiVersuch(Studiengang.getModul(modulId), pruefungsNr, note);
+    }
+
+    public boolean freiVersuch(Modul modul, int pruefungsNr, float note)
+    {
+        if (modul.getPruefungMitNr(pruefungsNr) != null)
+        {
+            return freiVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+        }
+        return false;
+    }
+
+    public boolean freiVersuch(Pruefung pruefung, float note) {
         for (Versuch versuch:Versuche)
         {
-            if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch() > 0) return;
+            if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch() > 0) return false;
         }
-        addVersuch(new Versuch(pruefung,0,note));
+        return addVersuch(new Versuch(pruefung,0,note));
     }
 
-    public void addVersuch(Versuch versuch)
+    public boolean addVersuch(Versuch versuch)
     {
-        if (!fuerPruefungZugelassen(versuch.getPruefung())) return;
+        if (!fuerPruefungZugelassen(versuch.getPruefung())) return false;
         Versuche.add(versuch);
         if (versuch.bestanden())
         {
@@ -128,6 +112,7 @@ public class Student
         {
             exmatrikuliert = true;
         }
+        return true;
     }
 
     public Set<Modul> angefangeneModule()

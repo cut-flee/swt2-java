@@ -38,6 +38,16 @@ public class Modul
             if (letzterVersuch != null)
             {
                 teilNote = letzterVersuch.getNote();
+                if (letzterVersuch.getVersuch() > 0)
+                {
+                    for (Versuch versuch : versuche)
+                    {
+                        if (versuch.getVersuch() == 0 && versuch.getPruefung().equals(pruefung) && versuch.getNote() < teilNote)
+                        {
+                            teilNote = versuch.getNote();
+                        }
+                    }
+                }
             }
             for (int i = 0; i < pruefung.getWichtung(); i++)
             {
