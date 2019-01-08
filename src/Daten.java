@@ -30,7 +30,7 @@ public class Daten
                 new HashSet<Modul>(),
                 new HashSet<Pruefung>()
         );
-        INF_B_230.getPruefungen().add(new Pruefung(INF_B_230,1,0,1,true));
+        INF_B_230.getPruefungen().add(new Pruefung(INF_B_230,1,0,1,false));
 
         Modul INF_B_240 = new Modul("INF-B-240", "Programmierung", 2, 2, 0,
                 new HashSet<Modul>(),
@@ -66,7 +66,7 @@ public class Daten
                 new HashSet<Modul>(Arrays.asList(INF_B_310)),
                 new HashSet<Pruefung>()
         );
-        INF_B_320.getPruefungen().add(new Pruefung(INF_B_320,1,0,1,true));
+        INF_B_320.getPruefungen().add(new Pruefung(INF_B_320,1,0,1,false));
 
 
         Modul INF_B_330 = new Modul("INF-B-330", "Rechnerarchitektur", 4, 4, 0,
