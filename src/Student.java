@@ -35,9 +35,9 @@ public class Student
         if (exmatrikuliert) return false;
         if (BestandenePruefungen.contains(pruefung))
         {
-            for (Versuch versuch:Versuche)
+            for (Versuch versuch : Versuche)
             {
-                if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch()>0) return false;
+                if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch() > 0) return false;
             }
         }
         Set<Pruefung> voraussetzungen = new HashSet<Pruefung>();
@@ -56,7 +56,7 @@ public class Student
     {
         if (modul.getPruefungMitNr(pruefungsNr) != null)
         {
-            return setNaechsterVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+            return setNaechsterVersuch(modul.getPruefungMitNr(pruefungsNr), note);
         }
         return false;
     }
@@ -66,10 +66,10 @@ public class Student
         Versuch letzterVersuch = Versuch.letzterVersuch(Versuche, pruefung);
         if (letzterVersuch == null || letzterVersuch.getVersuch() == 0)
         {
-            return addVersuch(new Versuch(pruefung,1,note));
-        }else
+            return addVersuch(new Versuch(pruefung, 1, note));
+        } else
         {
-            Versuch naechsterVersuch = Versuch.naechsterVersuch(letzterVersuch,note);
+            Versuch naechsterVersuch = Versuch.naechsterVersuch(letzterVersuch, note);
             if (naechsterVersuch == null) return false;
             return addVersuch(naechsterVersuch);
         }
@@ -84,17 +84,18 @@ public class Student
     {
         if (modul.getPruefungMitNr(pruefungsNr) != null)
         {
-            return freiVersuch(modul.getPruefungMitNr(pruefungsNr),note);
+            return freiVersuch(modul.getPruefungMitNr(pruefungsNr), note);
         }
         return false;
     }
 
-    public boolean freiVersuch(Pruefung pruefung, float note) {
-        for (Versuch versuch:Versuche)
+    public boolean freiVersuch(Pruefung pruefung, float note)
+    {
+        for (Versuch versuch : Versuche)
         {
             if (versuch.getPruefung().equals(pruefung) && versuch.getVersuch() > 0) return false;
         }
-        return addVersuch(new Versuch(pruefung,0,note));
+        return addVersuch(new Versuch(pruefung, 0, note));
     }
 
     public boolean addVersuch(Versuch versuch)
@@ -108,7 +109,7 @@ public class Student
             {
                 BestandeneModule.add(versuch.getModul());
             }
-        }else if (versuch.getVersuch() == 3)
+        } else if (versuch.getVersuch() == 3)
         {
             exmatrikuliert = true;
         }

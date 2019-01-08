@@ -13,10 +13,11 @@ public class Pruefungsordnung
 
     public Modul getModul(String modulId)
     {
-        for(Modul  modul: Module){
-            if(modul.getId().equals(modulId))
+        for (Modul modul : Module)
+        {
+            if (modul.getId().equals(modulId))
             {
-               return modul;
+                return modul;
             }
         }
         return null;

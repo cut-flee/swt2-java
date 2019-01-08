@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Set;
 
 public class Versuch
@@ -21,7 +22,8 @@ public class Versuch
                 if (letzterVersuch == null || (letzterVersuch.getVersuch() < versuch.getVersuch()))
                 {
                     letzterVersuch = versuch;
-                }else if (letzterVersuch.getVersuch() == versuch.getVersuch() && letzterVersuch.getNote() > versuch.getNote()){
+                } else if (letzterVersuch.getVersuch() == versuch.getVersuch() && letzterVersuch.getNote() > versuch.getNote())
+                {
                     letzterVersuch = versuch;
                 }
             }
@@ -64,6 +66,23 @@ public class Versuch
     public float getNote()
     {
         return Note;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Versuch versuch = (Versuch) o;
+        return Versuch == versuch.Versuch &&
+                Float.compare(versuch.Note, Note) == 0 &&
+                Objects.equals(Pruefung, versuch.Pruefung);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(Pruefung, Versuch, Note);
     }
 
     @Override

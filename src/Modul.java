@@ -130,7 +130,15 @@ public class Modul
                 SWSUebung == modul.SWSUebung &&
                 SWSPraktikum == modul.SWSPraktikum &&
                 Id.equals(modul.Id) &&
-                Name.equals(modul.Name);
+                Name.equals(modul.Name) &&
+                Voraussetzungen.equals(modul.Voraussetzungen) &&
+                Pruefungen.equals(modul.Pruefungen);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(Id, Name, SWSVorlesung, SWSUebung, SWSPraktikum, Voraussetzungen, Pruefungen);
     }
 
     @Override

@@ -52,7 +52,13 @@ public class Pruefung
                 Laenge == pruefung.Laenge &&
                 Wichtung == pruefung.Wichtung &&
                 Schein == pruefung.Schein &&
-                Modul.equals(pruefung.Modul);
+                Modul.getId().equals(pruefung.Modul.getId());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(Modul.getId(), PruefungNr, Laenge, Wichtung, Schein);
     }
 
     @Override
